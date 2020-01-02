@@ -1,14 +1,15 @@
 import sqlite3
 import sys
-from PyQt5 import uic
+from ui_main import Ui_MainWindow
+from ui_addEditCoffeeForm import Ui_Form
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem, QDialog
 
 
-class MyWidget(QMainWindow):
+class MyWidget(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('main.ui', self)
-        self.con = sqlite3.connect("coffee.sqlite")
+        self.setupUi(self)
+        self.con = sqlite3.connect("data/coffee.sqlite")
         self.show_from_request('Select * from coffee')
         self.edit_find.textChanged.connect(self.find_coffee)
         self.pushButton.clicked.connect(self.open_add_edit)
@@ -42,11 +43,11 @@ class MyWidget(QMainWindow):
         self.show_from_request(f"Select * from coffee")
 
 
-class AddEdit(QDialog):
+class AddEdit(QDialog, Ui_Form):
     def __init__(self, titles):
         super().__init__()
-        uic.loadUi('addEditCoffeeForm.ui', self)
-        self.con = sqlite3.connect("coffee.sqlite")
+        self.setupUi(self)
+        self.con = sqlite3.connect("data/coffee.sqlite")
         self.tableWidget.setColumnCount(len(titles))
         self.tableWidget.setHorizontalHeaderLabels(titles)
         self.tableWidget.setRowCount(1)
